@@ -4,10 +4,7 @@ const menuButton = document.querySelector(".menu-toggle");
 const navigation = document.querySelector("#site-nav");
 const year = document.querySelector("#current-year");
 const flyby = document.querySelector("#ovni-flyby");
-const pointerDialog = document.querySelector("#pointer-dialog");
-const pointerForm = document.querySelector("#pointer-form");
-const soundToggle = document.querySelector("#sound-toggle");
-const soundStatus = document.querySelector("#sound-status");
+const pinkWash = document.querySelector("#ovni-pink-wash");
 const lensToggle = document.querySelector("#lens-toggle");
 const lensStatus = document.querySelector("#lens-status");
 const lens = document.querySelector("#ovni-lens");
@@ -39,11 +36,129 @@ if (menuButton && navigation) {
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
       closeMenu();
-      if (!pointerDialog || !pointerDialog.open) {
-        menuButton.focus();
-      }
+      menuButton.focus();
     }
   });
+}
+
+const roseToggle = document.querySelector("#ovni-rose-toggle");
+const roseMusic = document.querySelector("#ovni-music");
+const roseMain = document.querySelector("main");
+
+if (
+  roseToggle instanceof HTMLButtonElement &&
+  roseMain instanceof HTMLElement
+) {
+  const trail = document.createElement("canvas");
+  const context = trail.getContext("2d");
+  let roseEnabled = false;
+  let previousPoint = null;
+
+  trail.className = "ovni-rose-trail";
+  trail.setAttribute("aria-hidden", "true");
+  trail.hidden = true;
+  document.body.append(trail);
+
+  const resizeTrail = () => {
+    if (!context) {
+      return;
+    }
+
+    const width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
+    const height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+    const scale = Math.min(window.devicePixelRatio || 1, 2);
+    trail.style.width = `${width}px`;
+    trail.style.height = `${height}px`;
+    trail.width = Math.ceil(width * scale);
+    trail.height = Math.ceil(height * scale);
+    context.setTransform(scale, 0, 0, scale, 0, 0);
+  };
+
+  const paintTrail = (x, y) => {
+    if (!context) {
+      return;
+    }
+
+    const radius = 46;
+    const gradient = context.createRadialGradient(x, y, 0, x, y, radius);
+    gradient.addColorStop(0, "rgb(255 99 182 / 24%)");
+    gradient.addColorStop(0.55, "rgb(255 99 182 / 14%)");
+    gradient.addColorStop(1, "rgb(255 99 182 / 0%)");
+    context.fillStyle = gradient;
+    context.beginPath();
+    context.arc(x, y, radius, 0, Math.PI * 2);
+    context.fill();
+  };
+
+  roseToggle.addEventListener("click", () => {
+    if (!context) {
+      roseToggle.disabled = true;
+      console.error("The O.V.N.I. rose effect is unavailable because canvas could not be initialized.");
+      return;
+    }
+
+    roseEnabled = !roseEnabled;
+    roseToggle.setAttribute("aria-pressed", String(roseEnabled));
+    roseToggle.textContent = roseEnabled ? "Désactiver la vision rose" : "Activer la vision rose";
+    document.body.classList.toggle("ovni-rose-active", roseEnabled);
+    trail.hidden = !roseEnabled;
+    previousPoint = null;
+
+    if (roseEnabled) {
+      resizeTrail();
+
+      if (roseMusic instanceof HTMLAudioElement) {
+        roseMusic.currentTime = 0;
+        roseMusic.play().catch((error) => {
+          console.error("Unable to play the O.V.N.I. rose music.", error);
+        });
+      } else {
+        console.error("The O.V.N.I. rose music element is unavailable.");
+      }
+
+      return;
+    }
+
+    if (roseMusic instanceof HTMLAudioElement) {
+      roseMusic.pause();
+      roseMusic.currentTime = 0;
+    }
+
+    context.clearRect(0, 0, trail.width, trail.height);
+  });
+
+  document.addEventListener("pointermove", (event) => {
+    if (!roseEnabled || event.pointerType !== "mouse" || !roseMain.contains(event.target)) {
+      previousPoint = null;
+      return;
+    }
+
+    const point = { x: event.pageX, y: event.pageY };
+
+    if (!previousPoint) {
+      paintTrail(point.x, point.y);
+    } else {
+      const distance = Math.hypot(point.x - previousPoint.x, point.y - previousPoint.y);
+      const steps = Math.max(1, Math.ceil(distance / 14));
+
+      for (let step = 1; step <= steps; step += 1) {
+        const progress = step / steps;
+        paintTrail(
+          previousPoint.x + (point.x - previousPoint.x) * progress,
+          previousPoint.y + (point.y - previousPoint.y) * progress
+        );
+      }
+    }
+
+    previousPoint = point;
+  }, { passive: true });
+
+  window.addEventListener("resize", () => {
+    if (roseEnabled) {
+      resizeTrail();
+      previousPoint = null;
+    }
+  }, { passive: true });
 }
 
 if (
@@ -135,7 +250,7 @@ if (
   });
 
   document.addEventListener("pointermove", (event) => {
-    if (!lensEnabled || event.pointerType !== "mouse" || pointerDialog?.open) {
+    if (!lensEnabled || event.pointerType !== "mouse") {
       hideLens();
       return;
     }
@@ -224,158 +339,9 @@ if (
   }, { passive: true });
 }
 
-if (flyby instanceof HTMLElement && pointerDialog instanceof HTMLDialogElement && pointerForm instanceof HTMLFormElement) {
-  const closeButtons = pointerDialog.querySelectorAll("[data-close-pointer-dialog]");
+if (flyby instanceof HTMLElement) {
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const flybyDuration = 12000;
-  let audioContext = null;
-  let soundEnabled = false;
-
-  const playFlybySound = () => {
-    if (!audioContext || !soundEnabled || audioContext.state !== "running") {
-      return;
-    }
-
-    const duration = flybyDuration / 1000;
-    const now = audioContext.currentTime;
-    const buffer = audioContext.createBuffer(1, Math.ceil(audioContext.sampleRate * duration), audioContext.sampleRate);
-    const samples = buffer.getChannelData(0);
-
-    for (let index = 0; index < samples.length; index += 1) {
-      samples[index] = Math.random() * 2 - 1;
-    }
-
-    const noise = audioContext.createBufferSource();
-    const filter = audioContext.createBiquadFilter();
-    const noiseVolume = audioContext.createGain();
-    const drone = audioContext.createOscillator();
-    const droneVolume = audioContext.createGain();
-    const upperDrone = audioContext.createOscillator();
-    const upperVolume = audioContext.createGain();
-    const wobble = audioContext.createOscillator();
-    const wobbleDepth = audioContext.createGain();
-
-    noise.buffer = buffer;
-    filter.type = "lowpass";
-    filter.frequency.setValueAtTime(240, now);
-    filter.frequency.exponentialRampToValueAtTime(1500, now + 0.9);
-    filter.frequency.exponentialRampToValueAtTime(360, now + duration);
-    noiseVolume.gain.setValueAtTime(0.0001, now);
-    noiseVolume.gain.exponentialRampToValueAtTime(0.08, now + 0.8);
-    noiseVolume.gain.setValueAtTime(0.065, now + duration * 0.68);
-    noiseVolume.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-
-    drone.type = "sine";
-    drone.frequency.setValueAtTime(104, now);
-    drone.frequency.exponentialRampToValueAtTime(62, now + duration);
-    droneVolume.gain.setValueAtTime(0.0001, now);
-    droneVolume.gain.exponentialRampToValueAtTime(0.045, now + 1.2);
-    droneVolume.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-
-    upperDrone.type = "triangle";
-    upperDrone.frequency.setValueAtTime(157, now);
-    upperDrone.frequency.exponentialRampToValueAtTime(91, now + duration);
-    upperVolume.gain.setValueAtTime(0.0001, now);
-    upperVolume.gain.exponentialRampToValueAtTime(0.016, now + 1.4);
-    upperVolume.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-
-    wobble.type = "sine";
-    wobble.frequency.setValueAtTime(0.7, now);
-    wobble.frequency.linearRampToValueAtTime(2.2, now + duration);
-    wobbleDepth.gain.setValueAtTime(5, now);
-
-    noise.connect(filter);
-    filter.connect(noiseVolume);
-    noiseVolume.connect(audioContext.destination);
-    drone.connect(droneVolume);
-    droneVolume.connect(audioContext.destination);
-    upperDrone.connect(upperVolume);
-    upperVolume.connect(audioContext.destination);
-    wobble.connect(wobbleDepth);
-    wobbleDepth.connect(drone.frequency);
-    wobbleDepth.connect(upperDrone.frequency);
-    noise.start(now);
-    noise.stop(now + duration);
-    drone.start(now);
-    drone.stop(now + duration);
-    upperDrone.start(now);
-    upperDrone.stop(now + duration);
-    wobble.start(now);
-    wobble.stop(now + duration);
-  };
-
-  if (soundToggle instanceof HTMLButtonElement && soundStatus instanceof HTMLElement && "AudioContext" in window) {
-    soundToggle.addEventListener("click", async () => {
-      try {
-        if (!audioContext) {
-          audioContext = new AudioContext();
-        }
-
-        if (soundEnabled) {
-          await audioContext.suspend();
-          soundEnabled = false;
-        } else {
-          await audioContext.resume();
-          soundEnabled = true;
-        }
-
-        soundToggle.setAttribute("aria-pressed", String(soundEnabled));
-        soundToggle.textContent = soundEnabled ? "Désactiver le son de l’O.V.N.I." : "Activer le son de l’O.V.N.I.";
-        soundStatus.textContent = soundEnabled
-          ? "Un effet sonore original accompagnera le survol."
-          : "Son désactivé";
-      } catch (error) {
-        soundEnabled = false;
-        soundToggle.setAttribute("aria-pressed", "false");
-        soundStatus.textContent = "Impossible d’activer le son. Vérifiez les réglages audio du navigateur.";
-        console.error("Unable to activate the O.V.N.I. flyby sound.", error);
-      }
-    });
-  } else if (soundStatus instanceof HTMLElement) {
-    soundStatus.textContent = "Le son n’est pas disponible dans ce navigateur.";
-    if (soundToggle instanceof HTMLButtonElement) {
-      soundToggle.disabled = true;
-    }
-  }
-
-  closeButtons.forEach((button) => {
-    button.addEventListener("click", () => pointerDialog.close());
-  });
-
-  pointerDialog.addEventListener("click", (event) => {
-    if (event.target === pointerDialog) {
-      pointerDialog.close();
-    }
-  });
-
-  pointerForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    if (!pointerForm.reportValidity()) {
-      return;
-    }
-
-    const formData = new FormData(pointerForm);
-    const email = formData.get("email");
-
-    if (typeof email !== "string") {
-      pointerForm.reportValidity();
-      return;
-    }
-
-    const downloadLink = document.createElement("a");
-    downloadLink.href = "assets/ovni-pointer.svg";
-    downloadLink.download = "ovni-pointeur.svg";
-    downloadLink.hidden = true;
-    document.body.append(downloadLink);
-    downloadLink.click();
-    const subject = encodeURIComponent("Mon pointeur O.V.N.I.");
-    const body = encodeURIComponent(`Bonjour Didier,\n\nJe souhaite recevoir le pointeur O.V.N.I. au format SVG.\n\nMon adresse e-mail : ${email}\n\nJ’accepte que cette adresse soit utilisée uniquement pour m’envoyer le pointeur, sans newsletter ni autre usage.`);
-    window.location.href = `mailto:didierthebaut@gmail.com?subject=${subject}&body=${body}`;
-    downloadLink.remove();
-    pointerDialog.close();
-  });
-
   window.setTimeout(() => {
     const hasFlybyAnimation = !reducedMotion.matches && typeof flyby.animate === "function";
 
@@ -400,13 +366,21 @@ if (flyby instanceof HTMLElement && pointerDialog instanceof HTMLDialogElement &
         { duration: flybyDuration, easing: "ease-in-out", fill: "forwards" }
       );
 
-      playFlybySound();
-    }
-
-    window.setTimeout(() => {
-      if (pointerDialog.isConnected && !pointerDialog.open) {
-        pointerDialog.showModal();
+      if (pinkWash instanceof HTMLElement && typeof pinkWash.animate === "function") {
+        pinkWash.animate(
+          [
+            { clipPath: "inset(0 100% 0 0)", opacity: 0, offset: 0 },
+            { clipPath: "inset(0 88% 0 0)", opacity: 1, offset: 0.14 },
+            { clipPath: "inset(0 69% 0 0)", opacity: 1, offset: 0.3 },
+            { clipPath: "inset(0 53% 0 0)", opacity: 1, offset: 0.46 },
+            { clipPath: "inset(0 42% 0 0)", opacity: 1, offset: 0.6 },
+            { clipPath: "inset(0 27% 0 0)", opacity: 1, offset: 0.76 },
+            { clipPath: "inset(0 11% 0 0)", opacity: 1, offset: 0.91 },
+            { clipPath: "inset(0 0 0 0)", opacity: 1, offset: 1 }
+          ],
+          { duration: flybyDuration, easing: "ease-in-out", fill: "forwards" }
+        );
       }
-    }, hasFlybyAnimation ? flybyDuration : 800);
+    }
   }, 0);
 }
