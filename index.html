@@ -40,8 +40,12 @@
           <button class="button button-sound" id="sound-toggle" type="button" aria-pressed="false">
             Activer le son de l’O.V.N.I.
           </button>
+          <button class="button button-lens" id="lens-toggle" type="button" aria-pressed="false">
+            Voir la vie en rose
+          </button>
         </div>
         <p class="sound-status" id="sound-status" role="status" aria-live="polite">Son désactivé</p>
+        <p class="lens-status" id="lens-status" role="status" aria-live="polite">L’effet rose est désactivé</p>
       </div>
       <div class="idea-orbit" role="img" aria-label="Une soucoupe O.V.N.I. aux quatre couleurs, symbole des idées en mouvement">
         <div class="orbit-center">
@@ -129,7 +133,7 @@
       <div class="section-intro">
         <p class="eyebrow">Ils m’ont fait confiance</p>
         <h2>Des expériences dans des univers variés.</h2>
-        <p>Éducation, formation et conseil — quelques références issues de mon parcours.</p>
+        <p>Éducation, formation, conseil et territoire — quelques références issues de mon parcours.</p>
       </div>
       <ul class="reference-list">
         <li>EM Normandie</li>
@@ -177,6 +181,22 @@
       <circle class="flyby-light flyby-light-yellow" cx="68" cy="46" r="3" />
       <circle class="flyby-light flyby-light-green" cx="84" cy="43" r="3" />
     </svg>
+  </div>
+
+  <div class="ovni-cursor" id="ovni-cursor" aria-hidden="true" hidden>
+    <svg viewBox="0 0 120 68">
+      <path class="flyby-beam" d="M37 39 48 61h24l11-22" />
+      <path class="flyby-dome" d="M42 37a18 18 0 0 1 36 0" />
+      <path class="flyby-body" d="M13 40c7-13 87-13 94 0-7 12-87 12-94 0Z" />
+      <circle class="flyby-light flyby-light-blue" cx="36" cy="43" r="3" />
+      <circle class="flyby-light flyby-light-red" cx="52" cy="46" r="3" />
+      <circle class="flyby-light flyby-light-yellow" cx="68" cy="46" r="3" />
+      <circle class="flyby-light flyby-light-green" cx="84" cy="43" r="3" />
+    </svg>
+  </div>
+  <div class="ovni-lens" id="ovni-lens" aria-hidden="true" hidden>
+    <span class="ovni-lens-label">ZOOM O.V.N.I.</span>
+    <span class="ovni-lens-word" id="ovni-lens-word"></span>
   </div>
 
   <dialog class="pointer-dialog" id="pointer-dialog" aria-labelledby="pointer-title" aria-describedby="pointer-description">

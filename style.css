@@ -6,6 +6,8 @@
   --red: #ea4335;
   --yellow: #fbbc05;
   --green: #34a853;
+  --pink: #ff63b6;
+  --pink-light: #ffd1ea;
   --blue-dark: #0c3970;
   --sky: #e8f2fb;
   --paper: #f7f9fc;
@@ -267,6 +269,129 @@ h1 {
   margin: 10px 0 0;
   color: #9fb3d1;
   font-size: .76rem;
+}
+
+.button-lens {
+  border-color: rgb(251 188 5 / 48%);
+  background: rgb(251 188 5 / 9%);
+  color: #fff0bd;
+  cursor: pointer;
+  font: inherit;
+  font-size: .82rem;
+}
+
+.button-lens[aria-pressed="true"] {
+  border-color: rgb(251 188 5 / 80%);
+  background: rgb(251 188 5 / 18%);
+  color: var(--white);
+}
+
+.lens-status {
+  min-height: 1.3em;
+  margin: 4px 0 0;
+  color: #9fb3d1;
+  font-size: .76rem;
+}
+
+body.ovni-lens-active {
+  background-image:
+    radial-gradient(
+      circle 240px at var(--ovni-x, 50vw) var(--ovni-y, 50vh),
+      rgb(255 99 182 / 27%),
+      rgb(255 174 218 / 14%) 48%,
+      transparent 100%
+    ),
+    radial-gradient(ellipse at 12% 18%, rgb(66 133 244 / 6%), transparent 32%);
+  background-attachment: fixed;
+}
+
+body.ovni-lens-active main {
+  cursor: none;
+}
+
+.ovni-cursor {
+  position: fixed;
+  z-index: 45;
+  top: 0;
+  left: 0;
+  width: 58px;
+  height: 33px;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 8px rgb(8 21 45 / 46%));
+}
+
+.ovni-cursor svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.ovni-cursor[hidden],
+.ovni-lens[hidden] {
+  display: none;
+}
+
+.ovni-lens {
+  position: fixed;
+  z-index: 44;
+  display: grid;
+  width: 176px;
+  min-height: 104px;
+  align-content: center;
+  justify-items: center;
+  gap: 5px;
+  padding: 14px 18px;
+  overflow: hidden;
+  border: 1px solid rgb(255 99 182 / 84%);
+  border-radius: 24px;
+  background:
+    radial-gradient(ellipse at 50% 45%, rgb(255 99 182 / 32%), transparent 72%),
+    rgb(7 18 38 / 94%);
+  box-shadow:
+    0 0 0 4px rgb(255 99 182 / 15%),
+    0 10px 34px rgb(8 21 45 / 38%),
+    inset 0 0 22px rgb(255 99 182 / 20%);
+  color: var(--white);
+  pointer-events: none;
+  text-align: center;
+  backdrop-filter: blur(8px);
+}
+
+.ovni-lens-label {
+  color: var(--pink-light);
+  font-size: .56rem;
+  font-weight: 850;
+  letter-spacing: .16em;
+}
+
+.ovni-lens-word {
+  display: -webkit-box;
+  max-width: 100%;
+  overflow: hidden;
+  color: #fff;
+  font-size: 1.55rem;
+  font-weight: 850;
+  letter-spacing: -.04em;
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+  text-shadow: 0 0 16px rgb(255 99 182 / 76%);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.ovni-text-lit {
+  border-radius: 5px;
+  color: inherit;
+  text-shadow: 0 0 2px var(--pink), 0 0 16px rgb(255 99 182 / 76%);
+}
+
+body.ovni-lens-active .ovni-cursor .flyby-beam {
+  fill: rgb(255 99 182 / 30%);
+  stroke: var(--pink);
+}
+
+body.ovni-lens-active .ovni-cursor .flyby-dome {
+  fill: rgb(255 99 182 / 72%);
 }
 
 .idea-orbit {
