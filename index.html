@@ -53,25 +53,34 @@
 
     <section class="content-section section-shell" id="approche">
       <div class="section-intro">
-        <p class="eyebrow">Mon approche</p>
-        <h2>Relier créativité et résultats concrets.</h2>
-        <p>De la première intuition à sa mise en œuvre, je fais émerger des pistes nouvelles et aide à leur donner une direction claire.</p>
+        <p class="eyebrow">Ma méthode O.V.N.I.</p>
+        <h2>De l’observation à l’implémentation.</h2>
+        <p>Quatre étapes pour transformer les idées en projets concrets.</p>
       </div>
       <div class="service-grid">
         <article class="service-card">
-          <span class="service-icon" aria-hidden="true">✦</span>
-          <h3>Innover</h3>
-          <p>Ouvrir le champ des possibles grâce au design thinking, à la disruption et au brainstorming de personas.</p>
+          <span class="service-icon" aria-hidden="true">O</span>
+          <p class="step-number">01 · EXPLORER</p>
+          <h3>Observation</h3>
+          <p>Écouter, regarder le terrain et repérer les besoins qui méritent notre attention.</p>
         </article>
         <article class="service-card">
-          <span class="service-icon" aria-hidden="true">◎</span>
-          <h3>Communiquer</h3>
-          <p>Détecter les insights et améliorer la performance des stratégies de communication.</p>
+          <span class="service-icon" aria-hidden="true">V</span>
+          <p class="step-number">02 · IMAGINER</p>
+          <h3>Vision</h3>
+          <p>Ouvrir le champ des possibles et choisir un cap inspirant, clair et partagé.</p>
         </article>
         <article class="service-card">
-          <span class="service-icon" aria-hidden="true">↗</span>
-          <h3>Entreprendre</h3>
-          <p>Structurer les projets, clarifier les modèles et présenter les idées avec impact.</p>
+          <span class="service-icon" aria-hidden="true">N</span>
+          <p class="step-number">03 · RACONTER</p>
+          <h3>Narration</h3>
+          <p>Mettre l’idée en récit pour lui donner du sens et donner envie d’embarquer.</p>
+        </article>
+        <article class="service-card">
+          <span class="service-icon" aria-hidden="true">I</span>
+          <p class="step-number">04 · CONCRÉTISER</p>
+          <h3>Implémentation</h3>
+          <p>Passer à l’action, expérimenter et inscrire les idées dans la réalité.</p>
         </article>
       </div>
     </section>
@@ -123,6 +132,7 @@
         <li>ISG Luxe</li>
         <li>Pigier</li>
         <li>MSA</li>
+        <li>Mairie de Trouville</li>
       </ul>
     </section>
 
@@ -133,6 +143,9 @@
         <p>L’OVNI traverse la page et la teinte peu à peu en rose. Activez la vision rose pour accompagner son passage en musique.</p>
       </div>
       <div class="ovni-experience-panel">
+        <button class="button button-download" id="ovni-download-open" type="button">
+          Télécharger le curseur O.V.N.I.
+        </button>
         <button class="button button-rose" id="ovni-rose-toggle" type="button" aria-pressed="false">
           Activer la vision rose
         </button>
@@ -143,7 +156,7 @@
     <section class="contact-section section-shell" id="contact">
       <div>
         <p class="eyebrow">Et maintenant ?</p>
-        <h2>Vous avez une idée à faire grandir ?</h2>
+        <h2>Une idée à faire grandir</h2>
         <p>Échangeons sur vos enjeux et imaginons la suite.</p>
       </div>
       <div class="contact-links">
@@ -158,7 +171,20 @@
     <span>Innovation, communication et idées en mouvement.</span>
   </footer>
 
-  <div class="ovni-pink-wash" id="ovni-pink-wash" aria-hidden="true"></div>
+  <dialog class="ovni-download-dialog" id="ovni-download-dialog" aria-labelledby="ovni-download-title">
+    <form class="ovni-download-form" id="ovni-download-form">
+      <button class="ovni-dialog-close" type="button" id="ovni-download-close" aria-label="Fermer">×</button>
+      <p class="eyebrow">Le cadeau O.V.N.I.</p>
+      <h2 id="ovni-download-title">Emportez l’OVNI avec vous</h2>
+      <p>Indiquez votre adresse e-mail pour accéder au téléchargement du curseur Windows.</p>
+      <label for="ovni-download-email">Votre adresse e-mail</label>
+      <input id="ovni-download-email" type="email" autocomplete="email" required>
+      <p class="ovni-download-privacy">Votre adresse reste dans ce navigateur : elle n’est ni envoyée ni enregistrée.</p>
+      <button class="button button-rose" type="submit">Télécharger le curseur</button>
+      <a id="ovni-cursor-file" href="assets/ovni.cur" download="ovni.cur" hidden></a>
+    </form>
+  </dialog>
+
   <div class="ovni-flyby" id="ovni-flyby" aria-hidden="true">
     <svg viewBox="0 0 152 86" focusable="false">
       <path class="flyby-beam" d="M76 37 39 82h74L76 37Z"></path>

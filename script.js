@@ -4,7 +4,11 @@ const menuButton = document.querySelector(".menu-toggle");
 const navigation = document.querySelector("#site-nav");
 const year = document.querySelector("#current-year");
 const flyby = document.querySelector("#ovni-flyby");
-const pinkWash = document.querySelector("#ovni-pink-wash");
+const downloadOpen = document.querySelector("#ovni-download-open");
+const downloadDialog = document.querySelector("#ovni-download-dialog");
+const downloadForm = document.querySelector("#ovni-download-form");
+const downloadClose = document.querySelector("#ovni-download-close");
+const cursorFile = document.querySelector("#ovni-cursor-file");
 const lensToggle = document.querySelector("#lens-toggle");
 const lensStatus = document.querySelector("#lens-status");
 const lens = document.querySelector("#ovni-lens");
@@ -13,6 +17,41 @@ const ufoCursor = document.querySelector("#ovni-cursor");
 
 if (year) {
   year.textContent = String(new Date().getFullYear());
+}
+
+if (
+  downloadOpen instanceof HTMLButtonElement &&
+  downloadDialog instanceof HTMLDialogElement &&
+  downloadForm instanceof HTMLFormElement &&
+  downloadClose instanceof HTMLButtonElement &&
+  cursorFile instanceof HTMLAnchorElement
+) {
+  downloadOpen.addEventListener("click", () => {
+    downloadDialog.showModal();
+  });
+
+  downloadClose.addEventListener("click", () => {
+    downloadDialog.close();
+  });
+
+  downloadDialog.addEventListener("close", () => {
+    downloadForm.reset();
+  });
+
+  downloadDialog.addEventListener("click", (event) => {
+    if (event.target === downloadDialog) {
+      downloadDialog.close();
+    }
+  });
+
+  downloadForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    cursorFile.click();
+    downloadDialog.close();
+    downloadForm.reset();
+  });
+} else {
+  console.error("The O.V.N.I. cursor download dialog is unavailable.");
 }
 
 if (menuButton && navigation) {
@@ -366,21 +405,18 @@ if (flyby instanceof HTMLElement) {
         { duration: flybyDuration, easing: "ease-in-out", fill: "forwards" }
       );
 
-      if (pinkWash instanceof HTMLElement && typeof pinkWash.animate === "function") {
-        pinkWash.animate(
-          [
-            { clipPath: "inset(0 100% 0 0)", opacity: 0, offset: 0 },
-            { clipPath: "inset(0 88% 0 0)", opacity: 1, offset: 0.14 },
-            { clipPath: "inset(0 69% 0 0)", opacity: 1, offset: 0.3 },
-            { clipPath: "inset(0 53% 0 0)", opacity: 1, offset: 0.46 },
-            { clipPath: "inset(0 42% 0 0)", opacity: 1, offset: 0.6 },
-            { clipPath: "inset(0 27% 0 0)", opacity: 1, offset: 0.76 },
-            { clipPath: "inset(0 11% 0 0)", opacity: 1, offset: 0.91 },
-            { clipPath: "inset(0 0 0 0)", opacity: 1, offset: 1 }
-          ],
-          { duration: flybyDuration, easing: "ease-in-out", fill: "forwards" }
-        );
-      }
+      document.body.classList.add("ovni-text-colorizing");
+      const colorizeStartedAt = performance.now();
+      const colorizeText = (timestamp) => {
+        const progress = Math.min((timestamp - colorizeStartedAt) / flybyDuration, 1);
+        document.body.style.setProperty("--ovni-text-progress", `${progress * 100}%`);
+
+        if (progress < 1) {
+          window.requestAnimationFrame(colorizeText);
+        }
+      };
+
+      window.requestAnimationFrame(colorizeText);
     }
   }, 0);
 }
