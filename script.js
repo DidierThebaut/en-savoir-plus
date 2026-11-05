@@ -227,7 +227,7 @@ if (
 if (flyby instanceof HTMLElement && pointerDialog instanceof HTMLDialogElement && pointerForm instanceof HTMLFormElement) {
   const closeButtons = pointerDialog.querySelectorAll("[data-close-pointer-dialog]");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const flybyDuration = 7000;
+  const flybyDuration = 12000;
   let audioContext = null;
   let soundEnabled = false;
 
@@ -261,22 +261,22 @@ if (flyby instanceof HTMLElement && pointerDialog instanceof HTMLDialogElement &
     filter.frequency.exponentialRampToValueAtTime(1500, now + 0.9);
     filter.frequency.exponentialRampToValueAtTime(360, now + duration);
     noiseVolume.gain.setValueAtTime(0.0001, now);
-    noiseVolume.gain.exponentialRampToValueAtTime(0.045, now + 0.45);
-    noiseVolume.gain.setValueAtTime(0.035, now + 1.5);
+    noiseVolume.gain.exponentialRampToValueAtTime(0.08, now + 0.8);
+    noiseVolume.gain.setValueAtTime(0.065, now + duration * 0.68);
     noiseVolume.gain.exponentialRampToValueAtTime(0.0001, now + duration);
 
     drone.type = "sine";
     drone.frequency.setValueAtTime(104, now);
     drone.frequency.exponentialRampToValueAtTime(62, now + duration);
     droneVolume.gain.setValueAtTime(0.0001, now);
-    droneVolume.gain.exponentialRampToValueAtTime(0.018, now + 0.6);
+    droneVolume.gain.exponentialRampToValueAtTime(0.045, now + 1.2);
     droneVolume.gain.exponentialRampToValueAtTime(0.0001, now + duration);
 
     upperDrone.type = "triangle";
     upperDrone.frequency.setValueAtTime(157, now);
     upperDrone.frequency.exponentialRampToValueAtTime(91, now + duration);
     upperVolume.gain.setValueAtTime(0.0001, now);
-    upperVolume.gain.exponentialRampToValueAtTime(0.006, now + 0.7);
+    upperVolume.gain.exponentialRampToValueAtTime(0.016, now + 1.4);
     upperVolume.gain.exponentialRampToValueAtTime(0.0001, now + duration);
 
     wobble.type = "sine";
@@ -377,31 +377,36 @@ if (flyby instanceof HTMLElement && pointerDialog instanceof HTMLDialogElement &
   });
 
   window.setTimeout(() => {
-    if (!reducedMotion.matches && typeof flyby.animate === "function") {
+    const hasFlybyAnimation = !reducedMotion.matches && typeof flyby.animate === "function";
+
+    if (hasFlybyAnimation) {
       const width = window.innerWidth;
       const height = window.innerHeight;
-      const lowY = Math.max(100, height * 0.3);
-      const highY = Math.max(140, height * 0.68);
+      const topY = Math.max(100, height * 0.2);
+      const lowY = Math.max(120, height * 0.48);
+      const highY = Math.max(140, height * 0.76);
 
       flyby.animate(
         [
           { transform: `translate3d(-140px, ${lowY}px, 0) rotate(-12deg)`, opacity: 0, offset: 0 },
-          { transform: `translate3d(${width * 0.22}px, ${highY}px, 0) rotate(8deg)`, opacity: 1, offset: 0.2 },
-          { transform: `translate3d(${width * 0.48}px, ${lowY - 35}px, 0) rotate(-5deg)`, opacity: 1, offset: 0.42 },
-          { transform: `translate3d(${width * 0.48}px, ${lowY - 35}px, 0) rotate(-5deg)`, opacity: 1, offset: 0.68 },
-          { transform: `translate3d(${width * 0.75}px, ${highY - 25}px, 0) rotate(10deg)`, opacity: 1, offset: 0.86 },
-          { transform: `translate3d(${width + 140}px, ${lowY}px, 0) rotate(-8deg)`, opacity: 0, offset: 1 }
+          { transform: `translate3d(${width * 0.14}px, ${topY}px, 0) rotate(8deg)`, opacity: 1, offset: 0.14 },
+          { transform: `translate3d(${width * 0.31}px, ${highY}px, 0) rotate(-7deg)`, opacity: 1, offset: 0.3 },
+          { transform: `translate3d(${width * 0.47}px, ${topY + 24}px, 0) rotate(6deg)`, opacity: 1, offset: 0.46 },
+          { transform: `translate3d(${width * 0.58}px, ${topY + 24}px, 0) rotate(-3deg)`, opacity: 1, offset: 0.6 },
+          { transform: `translate3d(${width * 0.73}px, ${highY - 12}px, 0) rotate(8deg)`, opacity: 1, offset: 0.76 },
+          { transform: `translate3d(${width * 0.89}px, ${topY + 6}px, 0) rotate(-6deg)`, opacity: 1, offset: 0.91 },
+          { transform: `translate3d(${width + 140}px, ${lowY}px, 0) rotate(8deg)`, opacity: 0, offset: 1 }
         ],
         { duration: flybyDuration, easing: "ease-in-out", fill: "forwards" }
       );
-    }
 
-    playFlybySound();
+      playFlybySound();
+    }
 
     window.setTimeout(() => {
       if (pointerDialog.isConnected && !pointerDialog.open) {
         pointerDialog.showModal();
       }
-    }, flybyDuration);
+    }, hasFlybyAnimation ? flybyDuration : 800);
   }, 0);
 }
