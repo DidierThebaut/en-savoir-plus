@@ -582,11 +582,11 @@ h1 {
   z-index: 30;
   top: 0;
   left: 0;
-  width: 120px;
-  height: 68px;
+  width: 76px;
+  height: 43px;
   opacity: 0;
   pointer-events: none;
-  filter: drop-shadow(0 10px 15px rgb(8 21 45 / 30%));
+  filter: drop-shadow(0 6px 9px rgb(8 21 45 / 30%));
 }
 
 .ovni-flyby svg {
@@ -624,8 +624,8 @@ h1 {
 .flyby-light-green { fill: var(--green); }
 
 .pointer-dialog {
-  width: min(520px, calc(100% - 32px));
-  max-width: 520px;
+  width: min(420px, calc(100% - 28px));
+  max-width: 420px;
   max-height: calc(100% - 32px);
   padding: 0;
   overflow: auto;
@@ -644,14 +644,14 @@ h1 {
 .pointer-form {
   position: relative;
   display: grid;
-  gap: 14px;
-  padding: clamp(24px, 6vw, 38px);
+  gap: 11px;
+  padding: clamp(21px, 5vw, 30px);
 }
 
 .pointer-close {
   position: absolute;
-  top: 14px;
-  right: 16px;
+  top: 10px;
+  right: 10px;
   display: grid;
   width: 36px;
   height: 36px;
@@ -666,6 +666,7 @@ h1 {
 }
 
 .pointer-kicker {
+  max-width: calc(100% - 40px);
   color: #82e9ff;
   font-size: .73rem;
   font-weight: 800;
@@ -674,9 +675,9 @@ h1 {
 }
 
 .pointer-form h2 {
-  max-width: 400px;
+  max-width: 340px;
   margin: 0;
-  font-size: clamp(1.8rem, 6vw, 2.45rem);
+  font-size: clamp(1.65rem, 5vw, 2rem);
   letter-spacing: -.05em;
   line-height: 1.05;
 }
@@ -687,7 +688,8 @@ h1 {
 
 .pointer-form #pointer-description {
   color: #becde2;
-  font-size: .96rem;
+  font-size: .88rem;
+  line-height: 1.5;
 }
 
 .pointer-email-label {
@@ -698,7 +700,7 @@ h1 {
 
 .pointer-email {
   width: 100%;
-  min-height: 48px;
+  min-height: 44px;
   padding: 0 14px;
   border: 1px solid rgb(157 187 228 / 35%);
   border-radius: 12px;
@@ -716,7 +718,7 @@ h1 {
   align-items: flex-start;
   gap: 10px;
   color: #c4d2e7;
-  font-size: .82rem;
+  font-size: .78rem;
   line-height: 1.45;
 }
 
@@ -730,7 +732,7 @@ h1 {
 
 .pointer-form .pointer-privacy {
   color: #95a8c3;
-  font-size: .77rem;
+  font-size: .72rem;
   line-height: 1.5;
 }
 

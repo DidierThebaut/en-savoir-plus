@@ -66,6 +66,10 @@ if (flyby instanceof HTMLElement && pointerDialog instanceof HTMLDialogElement &
     const noiseVolume = audioContext.createGain();
     const drone = audioContext.createOscillator();
     const droneVolume = audioContext.createGain();
+    const upperDrone = audioContext.createOscillator();
+    const upperVolume = audioContext.createGain();
+    const wobble = audioContext.createOscillator();
+    const wobbleDepth = audioContext.createGain();
 
     noise.buffer = buffer;
     filter.type = "lowpass";
@@ -84,15 +88,36 @@ if (flyby instanceof HTMLElement && pointerDialog instanceof HTMLDialogElement &
     droneVolume.gain.exponentialRampToValueAtTime(0.018, now + 0.6);
     droneVolume.gain.exponentialRampToValueAtTime(0.0001, now + duration);
 
+    upperDrone.type = "triangle";
+    upperDrone.frequency.setValueAtTime(157, now);
+    upperDrone.frequency.exponentialRampToValueAtTime(91, now + duration);
+    upperVolume.gain.setValueAtTime(0.0001, now);
+    upperVolume.gain.exponentialRampToValueAtTime(0.006, now + 0.7);
+    upperVolume.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+    wobble.type = "sine";
+    wobble.frequency.setValueAtTime(0.7, now);
+    wobble.frequency.linearRampToValueAtTime(2.2, now + duration);
+    wobbleDepth.gain.setValueAtTime(5, now);
+
     noise.connect(filter);
     filter.connect(noiseVolume);
     noiseVolume.connect(audioContext.destination);
     drone.connect(droneVolume);
     droneVolume.connect(audioContext.destination);
+    upperDrone.connect(upperVolume);
+    upperVolume.connect(audioContext.destination);
+    wobble.connect(wobbleDepth);
+    wobbleDepth.connect(drone.frequency);
+    wobbleDepth.connect(upperDrone.frequency);
     noise.start(now);
     noise.stop(now + duration);
     drone.start(now);
     drone.stop(now + duration);
+    upperDrone.start(now);
+    upperDrone.stop(now + duration);
+    wobble.start(now);
+    wobble.stop(now + duration);
   };
 
   if (soundToggle instanceof HTMLButtonElement && soundStatus instanceof HTMLElement && "AudioContext" in window) {
