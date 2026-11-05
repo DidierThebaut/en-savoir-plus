@@ -247,6 +247,28 @@ h1 {
   color: var(--white);
 }
 
+.button-sound {
+  border-color: rgb(255 255 255 / 25%);
+  background: rgb(255 255 255 / 7%);
+  color: #dbe8f6;
+  cursor: pointer;
+  font: inherit;
+  font-size: .82rem;
+}
+
+.button-sound[aria-pressed="true"] {
+  border-color: rgb(130 233 255 / 70%);
+  background: rgb(66 133 244 / 20%);
+  color: var(--white);
+}
+
+.sound-status {
+  min-height: 1.3em;
+  margin: 10px 0 0;
+  color: #9fb3d1;
+  font-size: .76rem;
+}
+
 .idea-orbit {
   position: relative;
   display: grid;
@@ -553,6 +575,182 @@ h1 {
 .contact-links a {
   text-decoration-thickness: 1px;
   text-underline-offset: 4px;
+}
+
+.ovni-flyby {
+  position: fixed;
+  z-index: 30;
+  top: 0;
+  left: 0;
+  width: 120px;
+  height: 68px;
+  opacity: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 10px 15px rgb(8 21 45 / 30%));
+}
+
+.ovni-flyby svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.flyby-beam {
+  fill: rgb(251 188 5 / 12%);
+  stroke: rgb(251 188 5 / 58%);
+  stroke-width: 1.5;
+}
+
+.flyby-dome {
+  fill: rgb(66 133 244 / 60%);
+  stroke: #b7d1ff;
+  stroke-width: 2;
+}
+
+.flyby-body {
+  fill: #edf4ff;
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.flyby-light {
+  stroke: #fff;
+  stroke-width: 1;
+}
+
+.flyby-light-blue { fill: var(--blue); }
+.flyby-light-red { fill: var(--red); }
+.flyby-light-yellow { fill: var(--yellow); }
+.flyby-light-green { fill: var(--green); }
+
+.pointer-dialog {
+  width: min(520px, calc(100% - 32px));
+  max-width: 520px;
+  max-height: calc(100% - 32px);
+  padding: 0;
+  overflow: auto;
+  border: 1px solid rgb(130 233 255 / 28%);
+  border-radius: 24px;
+  background: #0b1930;
+  color: #f4f7ff;
+  box-shadow: 0 30px 100px rgb(0 0 0 / 42%);
+}
+
+.pointer-dialog::backdrop {
+  background: rgb(4 12 27 / 72%);
+  backdrop-filter: blur(6px);
+}
+
+.pointer-form {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  padding: clamp(24px, 6vw, 38px);
+}
+
+.pointer-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 50%;
+  background: rgb(255 255 255 / 6%);
+  color: #e9f1ff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 1.35rem;
+}
+
+.pointer-kicker {
+  color: #82e9ff;
+  font-size: .73rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.pointer-form h2 {
+  max-width: 400px;
+  margin: 0;
+  font-size: clamp(1.8rem, 6vw, 2.45rem);
+  letter-spacing: -.05em;
+  line-height: 1.05;
+}
+
+.pointer-form > p {
+  margin: 0;
+}
+
+.pointer-form #pointer-description {
+  color: #becde2;
+  font-size: .96rem;
+}
+
+.pointer-email-label {
+  margin-top: 4px;
+  font-size: .88rem;
+  font-weight: 700;
+}
+
+.pointer-email {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid rgb(157 187 228 / 35%);
+  border-radius: 12px;
+  background: #071226;
+  color: #fff;
+  font: inherit;
+}
+
+.pointer-email::placeholder {
+  color: #8395b1;
+}
+
+.pointer-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #c4d2e7;
+  font-size: .82rem;
+  line-height: 1.45;
+}
+
+.pointer-consent input {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  margin: 2px 0 0;
+  accent-color: var(--green);
+}
+
+.pointer-form .pointer-privacy {
+  color: #95a8c3;
+  font-size: .77rem;
+  line-height: 1.5;
+}
+
+.pointer-submit {
+  width: 100%;
+  cursor: pointer;
+  font: inherit;
+}
+
+.pointer-later {
+  justify-self: center;
+  padding: 4px 10px;
+  border: 0;
+  background: transparent;
+  color: #c4d2e7;
+  cursor: pointer;
+  font: inherit;
+  font-size: .88rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .site-footer {

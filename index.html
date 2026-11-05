@@ -37,7 +37,11 @@
         <div class="hero-actions">
           <a class="button button-primary" href="#contact">Parlons de votre projet</a>
           <a class="button button-outline" href="#approche">Découvrir l’approche O.V.N.I.</a>
+          <button class="button button-sound" id="sound-toggle" type="button" aria-pressed="false">
+            Activer le son de l’O.V.N.I.
+          </button>
         </div>
+        <p class="sound-status" id="sound-status" role="status" aria-live="polite">Son désactivé</p>
       </div>
       <div class="idea-orbit" role="img" aria-label="Une soucoupe O.V.N.I. aux quatre couleurs, symbole des idées en mouvement">
         <div class="orbit-center">
@@ -161,6 +165,36 @@
       </div>
     </section>
   </main>
+
+  <div class="ovni-flyby" id="ovni-flyby" aria-hidden="true">
+    <svg viewBox="0 0 120 68">
+      <path class="flyby-beam" d="M37 39 48 61h24l11-22" />
+      <path class="flyby-dome" d="M42 37a18 18 0 0 1 36 0" />
+      <path class="flyby-body" d="M13 40c7-13 87-13 94 0-7 12-87 12-94 0Z" />
+      <circle class="flyby-light flyby-light-blue" cx="36" cy="43" r="3" />
+      <circle class="flyby-light flyby-light-red" cx="52" cy="46" r="3" />
+      <circle class="flyby-light flyby-light-yellow" cx="68" cy="46" r="3" />
+      <circle class="flyby-light flyby-light-green" cx="84" cy="43" r="3" />
+    </svg>
+  </div>
+
+  <dialog class="pointer-dialog" id="pointer-dialog" aria-labelledby="pointer-title" aria-describedby="pointer-description">
+    <form class="pointer-form" id="pointer-form">
+      <button class="pointer-close" type="button" aria-label="Fermer la fenêtre" data-close-pointer-dialog>×</button>
+      <span class="pointer-kicker">Un petit souvenir venu d’ailleurs</span>
+      <h2 id="pointer-title">L’O.V.N.I. comme pointeur ?</h2>
+      <p id="pointer-description">Téléchargez le pointeur O.V.N.I. au format SVG. Pour me laisser votre adresse e-mail, renseignez-la ci-dessous et envoyez le message prérempli qui s’ouvrira dans votre messagerie.</p>
+      <label class="pointer-email-label" for="pointer-email">Votre adresse e-mail</label>
+      <input class="pointer-email" id="pointer-email" name="email" type="email" autocomplete="email" placeholder="vous@exemple.fr" required autofocus>
+      <label class="pointer-consent">
+        <input name="consent" type="checkbox" required>
+        <span>J’accepte que mon adresse soit utilisée uniquement pour m’envoyer le pointeur, sans newsletter ni autre usage.</span>
+      </label>
+      <p class="pointer-privacy">Le site ne stocke pas vos coordonnées. Vous gardez la main sur l’envoi du message. Le fichier SVG est une image vectorielle ; sa compatibilité comme pointeur dépend de l’outil et de l’appareil.</p>
+      <button class="button button-primary pointer-submit" type="submit">Télécharger le pointeur</button>
+      <button class="pointer-later" type="button" data-close-pointer-dialog>Non merci</button>
+    </form>
+  </dialog>
 
   <footer class="site-footer">
     <span>© <span id="current-year">2026</span> Didier Thebaut</span>
