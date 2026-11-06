@@ -6,9 +6,7 @@ const year = document.querySelector("#current-year");
 const flyby = document.querySelector("#ovni-flyby");
 const downloadOpen = document.querySelector("#ovni-download-open");
 const downloadDialog = document.querySelector("#ovni-download-dialog");
-const downloadForm = document.querySelector("#ovni-download-form");
 const downloadClose = document.querySelector("#ovni-download-close");
-const cursorFile = document.querySelector("#ovni-cursor-file");
 const lensToggle = document.querySelector("#lens-toggle");
 const lensStatus = document.querySelector("#lens-status");
 const lens = document.querySelector("#ovni-lens");
@@ -22,9 +20,7 @@ if (year) {
 if (
   downloadOpen instanceof HTMLButtonElement &&
   downloadDialog instanceof HTMLDialogElement &&
-  downloadForm instanceof HTMLFormElement &&
-  downloadClose instanceof HTMLButtonElement &&
-  cursorFile instanceof HTMLAnchorElement
+  downloadClose instanceof HTMLButtonElement
 ) {
   downloadOpen.addEventListener("click", () => {
     downloadDialog.showModal();
@@ -34,21 +30,10 @@ if (
     downloadDialog.close();
   });
 
-  downloadDialog.addEventListener("close", () => {
-    downloadForm.reset();
-  });
-
   downloadDialog.addEventListener("click", (event) => {
     if (event.target === downloadDialog) {
       downloadDialog.close();
     }
-  });
-
-  downloadForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    cursorFile.click();
-    downloadDialog.close();
-    downloadForm.reset();
   });
 } else {
   console.error("The O.V.N.I. cursor download dialog is unavailable.");
