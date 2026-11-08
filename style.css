@@ -159,29 +159,6 @@ a {
   box-shadow: 0 18px 55px rgb(20 45 75 / 7%);
 }
 
-.hero::before,
-.hero::after {
-  position: absolute;
-  z-index: -1;
-  border: 1px solid rgb(66 133 244 / 13%);
-  border-radius: 50%;
-  content: "";
-}
-
-.hero::before {
-  top: -240px;
-  right: -80px;
-  width: 570px;
-  height: 570px;
-}
-
-.hero::after {
-  top: -170px;
-  right: -8px;
-  width: 430px;
-  height: 430px;
-}
-
 .hero-content {
   position: relative;
   z-index: 1;
@@ -654,17 +631,6 @@ body.ovni-lens-active .ovni-cursor .flyby-dome {
 
 .orbit-label-bottom {
   bottom: 8%;
-}
-
-.hero-decoration {
-  position: absolute;
-  z-index: -1;
-  right: 3%;
-  bottom: -240px;
-  width: 400px;
-  height: 400px;
-  border: 1px solid rgb(66 133 244 / 12%);
-  border-radius: 50%;
 }
 
 .content-section {
