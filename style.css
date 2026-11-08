@@ -929,7 +929,7 @@ body.ovni-lens-active .ovni-cursor .flyby-dome {
   text-underline-offset: 4px;
 }
 
-body.ovni-text-colorizing main :is(h1, h2, h3, p, li, a:not(.button), .eyebrow) {
+body.ovni-text-colorizing main :is(h1, h2, h3, p:not(.section-action), li, a:not(.button), .eyebrow) {
   background-image: linear-gradient(
     to right,
     var(--pink) 0,
