@@ -929,6 +929,65 @@ body.ovni-lens-active .ovni-cursor .flyby-dome {
   text-underline-offset: 4px;
 }
 
+body.ovni-text-colorizing main :is(h1, h2, h3, p, li, a:not(.button), .eyebrow) {
+  background-image: linear-gradient(
+    to right,
+    var(--pink) 0,
+    var(--pink) var(--ovni-text-progress, 0%),
+    currentColor var(--ovni-text-progress, 0%),
+    currentColor 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ovni-flyby {
+  position: fixed;
+  z-index: 30;
+  top: 0;
+  left: 0;
+  width: 76px;
+  height: 43px;
+  opacity: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 9px rgb(8 21 45 / 30%));
+}
+
+.ovni-flyby svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+}
+
+.flyby-beam {
+  fill: rgb(251 188 5 / 12%);
+  stroke: rgb(251 188 5 / 58%);
+  stroke-width: 1.5;
+}
+
+.flyby-dome {
+  fill: rgb(66 133 244 / 60%);
+  stroke: #b7d1ff;
+  stroke-width: 2;
+}
+
+.flyby-body {
+  fill: #edf4ff;
+  stroke: #fff;
+  stroke-width: 2;
+}
+
+.flyby-light {
+  stroke: #fff;
+  stroke-width: 1;
+}
+
+.flyby-light-blue { fill: var(--blue); }
+.flyby-light-red { fill: var(--red); }
+.flyby-light-yellow { fill: var(--yellow); }
+.flyby-light-green { fill: var(--green); }
+
 .site-footer {
   display: flex;
   justify-content: space-between;

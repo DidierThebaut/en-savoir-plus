@@ -361,3 +361,48 @@ if (
     }
   }, { passive: true });
 }
+
+const flyby = document.querySelector("#ovni-flyby");
+
+if (flyby instanceof HTMLElement) {
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const flybyDuration = 12000;
+  window.setTimeout(() => {
+    const hasFlybyAnimation = !reducedMotion.matches && typeof flyby.animate === "function";
+
+    if (hasFlybyAnimation) {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const topY = Math.max(100, height * 0.2);
+      const lowY = Math.max(120, height * 0.48);
+      const highY = Math.max(140, height * 0.76);
+
+      flyby.animate(
+        [
+          { transform: `translate3d(-140px, ${lowY}px, 0) rotate(-12deg)`, opacity: 0, offset: 0 },
+          { transform: `translate3d(${width * 0.14}px, ${topY}px, 0) rotate(8deg)`, opacity: 1, offset: 0.14 },
+          { transform: `translate3d(${width * 0.31}px, ${highY}px, 0) rotate(-7deg)`, opacity: 1, offset: 0.3 },
+          { transform: `translate3d(${width * 0.47}px, ${topY + 24}px, 0) rotate(6deg)`, opacity: 1, offset: 0.46 },
+          { transform: `translate3d(${width * 0.58}px, ${topY + 24}px, 0) rotate(-3deg)`, opacity: 1, offset: 0.6 },
+          { transform: `translate3d(${width * 0.73}px, ${highY - 12}px, 0) rotate(8deg)`, opacity: 1, offset: 0.76 },
+          { transform: `translate3d(${width * 0.89}px, ${topY + 6}px, 0) rotate(-6deg)`, opacity: 1, offset: 0.91 },
+          { transform: `translate3d(${width + 140}px, ${lowY}px, 0) rotate(8deg)`, opacity: 0, offset: 1 }
+        ],
+        { duration: flybyDuration, easing: "ease-in-out", fill: "forwards" }
+      );
+
+      document.body.classList.add("ovni-text-colorizing");
+      const colorizeStartedAt = performance.now();
+      const colorizeText = (timestamp) => {
+        const progress = Math.min((timestamp - colorizeStartedAt) / flybyDuration, 1);
+        document.body.style.setProperty("--ovni-text-progress", `${progress * 100}%`);
+
+        if (progress < 1) {
+          window.requestAnimationFrame(colorizeText);
+        }
+      };
+
+      window.requestAnimationFrame(colorizeText);
+    }
+  }, 0);
+}
