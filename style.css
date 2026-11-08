@@ -947,8 +947,8 @@ body.ovni-text-colorizing main :is(h1, h2, h3, p:not(.section-action), li, a:not
   z-index: 30;
   top: 0;
   left: 0;
-  width: 76px;
-  height: 43px;
+  width: 104px;
+  height: 59px;
   opacity: 0;
   pointer-events: none;
   filter: drop-shadow(0 6px 9px rgb(8 21 45 / 30%));
@@ -961,8 +961,8 @@ body.ovni-text-colorizing main :is(h1, h2, h3, p:not(.section-action), li, a:not
 }
 
 .flyby-beam {
-  fill: rgb(251 188 5 / 12%);
-  stroke: rgb(251 188 5 / 58%);
+  fill: rgb(255 99 182 / 18%);
+  stroke: rgb(255 99 182 / 28%);
   stroke-width: 1.5;
 }
 
