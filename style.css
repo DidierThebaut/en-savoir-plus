@@ -426,7 +426,7 @@ h1 {
 
 .ovni-rose-trail {
   position: absolute;
-  z-index: 4;
+  z-index: 0;
   top: 0;
   left: 0;
   pointer-events: none;
@@ -437,7 +437,14 @@ h1 {
 }
 
 body.ovni-rose-active main {
+  position: relative;
+  isolation: isolate;
   cursor: url("assets/ovni.cur") 16 16, auto;
+}
+
+body.ovni-rose-active main > :not(.ovni-rose-trail) {
+  position: relative;
+  z-index: 1;
 }
 
 body.ovni-lens-active {

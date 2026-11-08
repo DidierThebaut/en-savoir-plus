@@ -76,25 +76,40 @@ if (
   const context = trail.getContext("2d");
   let roseEnabled = false;
   let previousPoint = null;
+  let trailScale = 1;
+  let fadeFrame = 0;
 
   trail.className = "ovni-rose-trail";
   trail.setAttribute("aria-hidden", "true");
   trail.hidden = true;
-  document.body.append(trail);
+  roseMain.append(trail);
 
   const resizeTrail = () => {
     if (!context) {
       return;
     }
 
-    const width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
-    const height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
-    const scale = Math.min(window.devicePixelRatio || 1, 2);
+    const width = Math.max(roseMain.scrollWidth, roseMain.clientWidth);
+    const height = roseMain.scrollHeight;
+    trailScale = Math.min(window.devicePixelRatio || 1, 2);
     trail.style.width = `${width}px`;
     trail.style.height = `${height}px`;
-    trail.width = Math.ceil(width * scale);
-    trail.height = Math.ceil(height * scale);
-    context.setTransform(scale, 0, 0, scale, 0, 0);
+    trail.width = Math.ceil(width * trailScale);
+    trail.height = Math.ceil(height * trailScale);
+    context.setTransform(trailScale, 0, 0, trailScale, 0, 0);
+  };
+
+  const fadeTrail = () => {
+    if (!context || !roseEnabled) {
+      return;
+    }
+
+    context.save();
+    context.globalCompositeOperation = "destination-out";
+    context.fillStyle = "rgba(0, 0, 0, 0.012)";
+    context.fillRect(0, 0, trail.width / trailScale, trail.height / trailScale);
+    context.restore();
+    fadeFrame = window.requestAnimationFrame(fadeTrail);
   };
 
   const paintTrail = (x, y) => {
@@ -102,10 +117,10 @@ if (
       return;
     }
 
-    const radius = 46;
+    const radius = 58;
     const gradient = context.createRadialGradient(x, y, 0, x, y, radius);
-    gradient.addColorStop(0, "rgb(255 99 182 / 24%)");
-    gradient.addColorStop(0.55, "rgb(255 99 182 / 14%)");
+    gradient.addColorStop(0, "rgb(255 99 182 / 12%)");
+    gradient.addColorStop(0.55, "rgb(255 99 182 / 7%)");
     gradient.addColorStop(1, "rgb(255 99 182 / 0%)");
     context.fillStyle = gradient;
     context.beginPath();
@@ -129,6 +144,7 @@ if (
 
     if (roseEnabled) {
       resizeTrail();
+      fadeFrame = window.requestAnimationFrame(fadeTrail);
 
       if (roseMusic instanceof HTMLAudioElement) {
         roseMusic.currentTime = 0;
@@ -147,6 +163,8 @@ if (
       roseMusic.currentTime = 0;
     }
 
+    window.cancelAnimationFrame(fadeFrame);
+    fadeFrame = 0;
     context.clearRect(0, 0, trail.width, trail.height);
   });
 
@@ -156,7 +174,8 @@ if (
       return;
     }
 
-    const point = { x: event.pageX, y: event.pageY };
+    const mainBounds = roseMain.getBoundingClientRect();
+    const point = { x: event.clientX - mainBounds.left, y: event.clientY - mainBounds.top };
 
     if (!previousPoint) {
       paintTrail(point.x, point.y);
